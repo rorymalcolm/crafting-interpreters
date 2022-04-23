@@ -12,7 +12,6 @@ public class CraftingInterpreters {
     private static boolean hadError = false;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello my name is Rory");
         if (args.length > 1) {
             System.out.println("Usage: jlox [script]");
             System.exit(64);
