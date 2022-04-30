@@ -48,4 +48,13 @@ public class CraftingInterpreters {
             System.exit(65);
         }
     }
+
+    public static void error(int line, String message) {
+        report(line, "", message);
+    }
+
+    private static void report(int line, String where, String message) {
+        System.err.printf("[line %s] Error %s:%s%n",line, where, message);
+        hadError = true;
+    }
 }

@@ -55,7 +55,18 @@ public class TokenScanner {
             case '*':
                 addToken(TokenType.STAR);
                 break;
+            case '!':
+                addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
+                break;
+            case '=':
+                addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
+                break;
+            case '<':
+                addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
+            case '>':
+                addToken(match('=') ? TokenType.GREAT_EQUAL : TokenType.GREATER);
             default:
+                CraftingInterpreters.error(line, "Encountered an error during interpretation");
                 break;
         }
     }
@@ -76,5 +87,16 @@ public class TokenScanner {
     private void addToken(TokenType type, Object literal) {
         String text = source.substring(start, current);
         tokens.add(new Token(type, text, literal, line));
+    }
+
+    private boolean match(char expected) {
+        if(isAtEnd()) {
+           return false;
+        }
+        if(source.charAt(current) != expected) {
+            return false;
+        }
+        current++;
+        return true;
     }
 }
