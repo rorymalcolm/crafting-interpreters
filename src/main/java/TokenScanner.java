@@ -63,8 +63,26 @@ public class TokenScanner {
                 break;
             case '<':
                 addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
+                break;
             case '>':
                 addToken(match('=') ? TokenType.GREAT_EQUAL : TokenType.GREATER);
+                break;
+            case '/':
+                if(match('/')) {
+                    while (peek() != '\n' && !isAtEnd()) {
+                        advance();
+                    }
+                } else {
+                    addToken(TokenType.SLASH);
+                }
+                break;
+            case ' ':
+            case '\r':
+            case '\b':
+                break;
+            case '\n':
+                line++;
+                break;
             default:
                 CraftingInterpreters.error(line, "Encountered an error during interpretation");
                 break;
@@ -87,6 +105,13 @@ public class TokenScanner {
     private void addToken(TokenType type, Object literal) {
         String text = source.substring(start, current);
         tokens.add(new Token(type, text, literal, line));
+    }
+
+    private char peek() {
+        if (isAtEnd()) {
+            return '\0';
+        }
+        return source.charAt(current);
     }
 
     private boolean match(char expected) {
